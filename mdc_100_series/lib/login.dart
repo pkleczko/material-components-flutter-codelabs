@@ -14,6 +14,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'colors.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -44,24 +46,26 @@ class _LoginPageState extends State<LoginPage> {
             // TODO: Remove filled: true values (103)
             // TODO: Wrap Password with AccentColorOverride (103)
             // TODO: Add TextField widgets (101)
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                labelText: 'Username',
-              ),
-              controller: _usernameController,
-            ),
+            AccentColorOverride(
+                color: kShrineBrown900,
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                  ),
+                  controller: _usernameController,
+                )),
 // spacer
             SizedBox(height: 12.0),
 // [Password]
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                labelText: 'Password',
-              ),
-              controller: _passwordController,
-              obscureText: true,
-            ),
+            AccentColorOverride(
+                color: kShrineBrown900,
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                  ),
+                  controller: _passwordController,
+                  obscureText: true,
+                )),
             // TODO: Add button bar (101)
             ButtonBar(
               // TODO: Add a beveled rectangular border to CANCEL (103)
@@ -69,6 +73,9 @@ class _LoginPageState extends State<LoginPage> {
                 // TODO: Add buttons (101)
                 FlatButton(
                   child: Text('CANCEL'),
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                  ),
                   onPressed: () {
                     // TODO: Clear the text fields (101)
                     _usernameController.clear();
@@ -79,6 +86,10 @@ class _LoginPageState extends State<LoginPage> {
                 // TODO: Add a beveled rectangular border to NEXT (103)
                 RaisedButton(
                   child: Text('NEXT'),
+                  elevation: 8.0,
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                  ),
                   onPressed: () {
                     // TODO: Show the next page (101)
                     Navigator.pop(context);
@@ -94,3 +105,21 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 // TODO: Add AccentColorOverride (103)
+class AccentColorOverride extends StatelessWidget {
+  const AccentColorOverride({Key key, this.color, this.child})
+      : super(key: key);
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      child: child,
+      data: Theme.of(context).copyWith(
+        accentColor: color,
+        brightness: Brightness.dark,
+      ),
+    );
+  }
+}
