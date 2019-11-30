@@ -21,98 +21,14 @@ import 'supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
   // TODO: Add a variable for Category (104)
+  final Category category;
+
+  const HomePage({this.category: Category.all});
 
   @override
   Widget build(BuildContext context) {
     // TODO: Return an AsymmetricView (104)
+    return AsymmetricView(products: ProductsRepository.loadProducts(category));
     // TODO: Pass Category variable to AsymmetricView (104)
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            print('Menu button');
-          },
-        ),
-        title: Text('SHRINE'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('Search button');
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.tune),
-            onPressed: () {
-              print('Filter button');
-            },
-          ),
-        ],
-      ),
-      body: AsymmetricView(
-          products: ProductsRepository.loadProducts(Category.all)),
-    );
   }
-}
-
-List<Card> _buildGridCards(BuildContext context) {
-  List<Product> products = ProductsRepository.loadProducts(Category.all);
-
-  if (products == null || products.isEmpty) {
-    return const <Card>[];
-  }
-
-  final ThemeData theme = Theme.of(context);
-  final NumberFormat formatter = NumberFormat.simpleCurrency(
-      locale: Localizations.localeOf(context).toString());
-
-  return products.map((product) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      // TODO: Adjust card heights (103)
-      elevation: 3.0,
-      child: Column(
-        // TODO: Center items on the card (103)
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 18 / 11,
-            child: Image.asset(
-              product.assetName,
-              package: product.assetPackage,
-              // TODO: Adjust the box size (102)
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-              child: Column(
-                // TODO: Align labels to the bottom and center (103)
-                mainAxisAlignment: MainAxisAlignment.end,
-                // TODO: Change innermost Column (103)
-                children: <Widget>[
-                  // TODO: Handle overflowing labels (103)
-                  Text(
-                    product == null ? '' : product.name,
-                    style: theme.textTheme.button,
-                    softWrap: false,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  SizedBox(height: 4.0),
-                  Text(
-                    product == null ? '' : formatter.format(product.price),
-                    style: theme.textTheme.caption,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }).toList();
 }
